@@ -10,10 +10,25 @@ import Login from "./screens/Login";
 import Dashboard from "./screens/Dashboard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+// React
+import { useState, useEffect } from "react";
+
 // Stack Navigator
 const Stack = createStackNavigator();
 
 export default function App() {
+  const [onboarded, setOnboarded] = useState();
+  //Method to store session data
+  const getStorage = async () => {
+    const onboarded = await AsyncStorage.getItem("ONBOARDED");
+    setOnboarded(JSON.parse(onboarded));
+  };
+
+  //First Onboarding Session Screen
+  useEffect(() => {
+    getStorage();
+  }, []);
+
   // Loading Custom Fonts
   const [fontsLoaded] = useFonts({
     "Poppins-Thin": require("./assets/fonts/Poppins-Thin.ttf"),
@@ -50,39 +65,39 @@ export default function App() {
       heading: "Poppins",
       body: "Poppins",
     },
+    components: {
+      Input: {
+        variants: {
+          primary: {
+            borderColor: "blue.500",
+            bg: "blue.500",
+          },
+        },
+      },
+    },
   });
+
+  // useState
 
   return (
     <NativeBaseProvider theme={theme}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="getStarted">
+        <Stack.Navigator
+          initialRouteName={onboarded ? "Dashboard" : "Get-Started"}
+        >
           <Stack.Screen
-            name="Get Started"
+            name="Get-Started"
             component={GetStarted}
             options={{ headerShown: false }}
           />
-          {/* <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{ headerShown: false }}
-          /> */}
+
           <Stack.Screen
             name="Dashboard"
             component={Dashboard}
-            options={{ headerShown: true }}
+            options={{ headerShown: true, title: "TikList" }}
           />
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>
   );
 }
-// <Stack.Screen
-//   name="Get Started"
-//   component={GetStarted}
-//   options={{ headerShown: false }}
-// />
-// <Stack.Screen
-//   name="Login"
-//   component={Login}
-//   options={{ headerShown: false }}
-// />

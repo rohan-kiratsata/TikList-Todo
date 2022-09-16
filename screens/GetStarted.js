@@ -10,9 +10,15 @@ import {
   extendTheme,
 } from "native-base";
 import { StatusBar } from "native-base";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const GetStarted = ({ navigation }) => {
   const navigateToWelcome = () => {
+    navigation.navigate("Dashboard");
+  };
+
+  const onPressFinish = async () => {
+    await AsyncStorage.setItem("ONBOARDED", "true");
     navigation.navigate("Dashboard");
   };
 
@@ -33,11 +39,11 @@ const GetStarted = ({ navigation }) => {
             <Text color="blue.500">Track</Text> &{" "}
             <Text color="blue.500">Manage </Text>your daily tasks easily.
           </Text>
-          <Box>
-            <Button colorScheme="blue" size="lg" onPress={navigateToWelcome}>
+          <Container>
+            <Button colorScheme="blue" size="lg" onPress={onPressFinish}>
               Get Started
             </Button>
-          </Box>
+          </Container>
         </VStack>
       </Box>
     </NativeBaseProvider>
