@@ -94,7 +94,7 @@ export default function App() {
           <Stack.Screen
             name="Dashboard"
             component={Dashboard}
-            options={{ headerShown: true, title: "TikList" }}
+            options={{ headerShown: false, title: "TikList" }}
           />
         </Stack.Navigator>
       </NavigationContainer>
